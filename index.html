@@ -1,279 +1,407 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Spring and Java Learning Progress Tracker</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-        }
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-        .progress-container {
-            margin-bottom: 20px;
-        }
-        .progress-bar {
-            width: 100%;
-            height: 20px;
-            background-color: #e0e0e0;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        .progress {
-            height: 100%;
-            background-color: #4CAF50;
-            transition: width 0.3s ease;
-        }
-        .progress-text {
-            text-align: center;
-            margin-top: 10px;
-            font-weight: bold;
-        }
-        .category {
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            margin-bottom: 10px;
-            overflow: hidden;
-        }
-        .category-header {
-            background-color: #f5f5f5;
-            padding: 10px 15px;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .category-header:hover {
-            background-color: #e9e9e9;
-        }
-        .category-name {
-            font-weight: bold;
-        }
-        .category-items {
-            display: none;
-            padding: 0;
-            margin: 0;
-            list-style-type: none;
-        }
-        .category-items.expanded {
-            display: block;
-        }
-        .item {
-            padding: 10px 15px;
-            border-top: 1px solid #eee;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-        }
-        .item:hover {
-            background-color: #f9f9f9;
-        }
-        .checkbox {
-            width: 20px;
-            height: 20px;
-            border: 2px solid #aaa;
-            border-radius: 50%;
-            margin-right: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .checkbox.checked {
-            background-color: #4CAF50;
-            border-color: #4CAF50;
-        }
-        .checkbox.checked::after {
-            content: '✓';
-            color: white;
-            font-size: 14px;
-        }
-        .item-name {
-            flex-grow: 1;
-        }
-        .item.completed .item-name {
-            text-decoration: line-through;
-            color: #888;
-        }
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 20px;
+      }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+      }
+      h1 {
+        text-align: center;
+        color: #333;
+      }
+      .progress-container {
+        margin-bottom: 20px;
+      }
+      .progress-bar {
+        width: 100%;
+        height: 20px;
+        background-color: #e0e0e0;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      .progress {
+        height: 100%;
+        background-color: #4caf50;
+        transition: width 0.3s ease;
+      }
+      .progress-text {
+        text-align: center;
+        margin-top: 10px;
+        font-weight: bold;
+      }
+      .category {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin-bottom: 10px;
+        overflow: hidden;
+      }
+      .category-header {
+        background-color: #f5f5f5;
+        padding: 10px 15px;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .category-header:hover {
+        background-color: #e9e9e9;
+      }
+      .category-name {
+        font-weight: bold;
+      }
+      .category-items {
+        display: none;
+        padding: 0;
+        margin: 0;
+        list-style-type: none;
+      }
+      .category-items.expanded {
+        display: block;
+      }
+      .item {
+        padding: 10px 15px;
+        border-top: 1px solid #eee;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+      }
+      .item:hover {
+        background-color: #f9f9f9;
+      }
+      .checkbox {
+        width: 20px;
+        height: 20px;
+        border: 2px solid #aaa;
+        border-radius: 50%;
+        margin-right: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .checkbox.checked {
+        background-color: #4caf50;
+        border-color: #4caf50;
+      }
+      .checkbox.checked::after {
+        content: "✓";
+        color: white;
+        font-size: 14px;
+      }
+      .item-name {
+        flex-grow: 1;
+      }
+      .item.completed .item-name {
+        text-decoration: line-through;
+        color: #888;
+      }
+      .add-item-form,
+      .add-category-form {
+        display: flex;
+        padding: 10px 15px;
+        border-top: 1px solid #eee;
+      }
+      .add-item-form input,
+      .add-category-form input {
+        flex-grow: 1;
+        margin-right: 10px;
+        padding: 5px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+      .add-item-form button,
+      .add-category-form button {
+        padding: 5px 10px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .add-item-form button:hover,
+      .add-category-form button:hover {
+        background-color: #45a049;
+      }
+      .add-new-item-btn {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        background-color: #f0f0f0;
+        border: none;
+        border-top: 1px solid #eee;
+        cursor: pointer;
+        text-align: left;
+      }
+      .add-new-item-btn:hover {
+        background-color: #e6e6e6;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <h1>Spring and Java Learning Progress</h1>
-        <div class="progress-container">
-            <div class="progress-bar">
-                <div class="progress" id="progress"></div>
-            </div>
-            <div class="progress-text" id="progress-text"></div>
+      <h1>Spring and Java Learning Progress</h1>
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div class="progress" id="progress"></div>
         </div>
-        <div id="prerequisites"></div>
+        <div class="progress-text" id="progress-text"></div>
+      </div>
+      <div id="prerequisites"></div>
+      <div class="add-category-form">
+        <input
+          type="text"
+          id="new-category-input"
+          placeholder="New category name"
+        />
+        <button onclick="addNewCategory()">Add New Category</button>
+      </div>
     </div>
 
     <script>
-        const prerequisites = [
+      let prerequisites = JSON.parse(localStorage.getItem("prerequisites")) || [
+        {
+          name: "Core Java Concepts",
+          items: [
+            { name: "Object-Oriented Programming (OOP)", completed: false },
+            { name: "Exception Handling", completed: false },
+            { name: "Generics", completed: false },
+            { name: "Interfaces and Abstract Classes", completed: false },
+          ],
+          expanded: true,
+        },
+        {
+          name: "Basic Understanding of Web Concepts",
+          items: [
+            { name: "HTTP Protocol", completed: false },
             {
-                name: "Core Java Concepts",
-                items: [
-                    { name: "Object-Oriented Programming (OOP)", completed: false },
-                    { name: "Exception Handling", completed: false },
-                    { name: "Generics", completed: false },
-                    { name: "Interfaces and Abstract Classes", completed: false },
-                ],
-                expanded: true,
+              name: "REST (Representational State Transfer)",
+              completed: false,
             },
+            { name: "JSON", completed: false },
+          ],
+          expanded: true,
+        },
+        {
+          name: "Java Annotations",
+          items: [
             {
-                name: "Basic Understanding of Web Concepts",
-                items: [
-                    { name: "HTTP Protocol", completed: false },
-                    { name: "REST (Representational State Transfer)", completed: false },
-                    { name: "JSON", completed: false },
-                ],
-                expanded: true,
+              name: "Basic understanding of Java annotations",
+              completed: false,
             },
-            {
-                name: "Java Annotations",
-                items: [
-                    { name: "Basic understanding of Java annotations", completed: false },
-                ],
-                expanded: true,
-            },
-            {
-                name: "Dependency Injection and IoC",
-                items: [
-                    { name: "Understanding Dependency Injection", completed: false },
-                    { name: "Inversion of Control (IoC)", completed: false },
-                ],
-                expanded: true,
-            },
-            {
-                name: "Maven or Gradle",
-                items: [
-                    { name: "Setting up project files", completed: false },
-                    { name: "Adding dependencies", completed: false },
-                    { name: "Running and building projects", completed: false },
-                ],
-                expanded: true,
-            },
-            {
-                name: "Basic SQL and Database Knowledge",
-                items: [
-                    { name: "SQL Basics", completed: false },
-                    { name: "JDBC (Java Database Connectivity)", completed: false },
-                    { name: "ORM Concepts", completed: false },
-                ],
-                expanded: true,
-            },
-            {
-                name: "Version Control (Git)",
-                items: [
-                    { name: "Basic Git commands", completed: false },
-                    { name: "GitHub or other Git platforms", completed: false },
-                ],
-                expanded: true,
-            },
-            {
-                name: "Basic Unit Testing",
-                items: [
-                    { name: "JUnit and Mockito", completed: false },
-                    { name: "Spring's testing support", completed: false },
-                ],
-                expanded: true,
-            },
-            {
-                name: "Spring Ecosystem (Beginner Level)",
-                items: [
-                    { name: "Spring Boot", completed: false },
-                    { name: "Spring MVC", completed: false },
-                    { name: "Spring Data JPA", completed: false },
-                    { name: "Spring Security", completed: false },
-                ],
-                expanded: true,
-            },
-            {
-                name: "Tools and IDEs",
-                items: [
-                    { name: "Comfortable with Java IDE", completed: false },
-                    { name: "Running and debugging from IDE", completed: false },
-                ],
-                expanded: true,
-            },
-        ];
+          ],
+          expanded: true,
+        },
+        {
+          name: "Dependency Injection and IoC",
+          items: [
+            { name: "Understanding Dependency Injection", completed: false },
+            { name: "Inversion of Control (IoC)", completed: false },
+          ],
+          expanded: true,
+        },
+        {
+          name: "Maven or Gradle",
+          items: [
+            { name: "Setting up project files", completed: false },
+            { name: "Adding dependencies", completed: false },
+            { name: "Running and building projects", completed: false },
+          ],
+          expanded: true,
+        },
+        {
+          name: "Basic SQL and Database Knowledge",
+          items: [
+            { name: "SQL Basics", completed: false },
+            { name: "JDBC (Java Database Connectivity)", completed: false },
+            { name: "ORM Concepts", completed: false },
+          ],
+          expanded: true,
+        },
+        {
+          name: "Version Control (Git)",
+          items: [
+            { name: "Basic Git commands", completed: false },
+            { name: "GitHub or other Git platforms", completed: false },
+          ],
+          expanded: true,
+        },
+        {
+          name: "Basic Unit Testing",
+          items: [
+            { name: "JUnit and Mockito", completed: false },
+            { name: "Spring's testing support", completed: false },
+          ],
+          expanded: true,
+        },
+        {
+          name: "Spring Ecosystem (Beginner Level)",
+          items: [
+            { name: "Spring Boot", completed: false },
+            { name: "Spring MVC", completed: false },
+            { name: "Spring Data JPA", completed: false },
+            { name: "Spring Security", completed: false },
+          ],
+          expanded: true,
+        },
+        {
+          name: "Tools and IDEs",
+          items: [
+            { name: "Comfortable with Java IDE", completed: false },
+            { name: "Running and debugging from IDE", completed: false },
+          ],
+          expanded: true,
+        },
+      ];
 
-        function renderPrerequisites() {
-            const container = document.getElementById('prerequisites');
-            container.innerHTML = '';
+      function renderPrerequisites() {
+        const container = document.getElementById("prerequisites");
+        container.innerHTML = "";
 
-            prerequisites.forEach((category, categoryIndex) => {
-                const categoryElement = document.createElement('div');
-                categoryElement.className = 'category';
+        prerequisites.forEach((category, categoryIndex) => {
+          const categoryElement = document.createElement("div");
+          categoryElement.className = "category";
 
-                const header = document.createElement('div');
-                header.className = 'category-header';
-                header.innerHTML = `
-                    <span class="category-name">${category.name}</span>
-                    <span class="toggle-icon">${category.expanded ? '▲' : '▼'}</span>
-                `;
-                header.addEventListener('click', () => toggleCategory(categoryIndex));
+          const header = document.createElement("div");
+          header.className = "category-header";
+          header.innerHTML = `
+            <span class="category-name">${category.name}</span>
+            <span class="toggle-icon">${category.expanded ? "▲" : "▼"}</span>
+        `;
+          header.addEventListener("click", () => toggleCategory(categoryIndex));
 
-                const itemsList = document.createElement('ul');
-                itemsList.className = `category-items ${category.expanded ? 'expanded' : ''}`;
+          const itemsList = document.createElement("ul");
+          itemsList.className = `category-items ${
+            category.expanded ? "expanded" : ""
+          }`;
 
-                category.items.forEach((item, itemIndex) => {
-                    const listItem = document.createElement('li');
-                    listItem.className = `item ${item.completed ? 'completed' : ''}`;
-                    listItem.innerHTML = `
-                        <div class="checkbox ${item.completed ? 'checked' : ''}"></div>
-                        <span class="item-name">${item.name}</span>
-                    `;
-                    listItem.addEventListener('click', () => toggleItem(categoryIndex, itemIndex));
-                    itemsList.appendChild(listItem);
-                });
+          category.items.forEach((item, itemIndex) => {
+            const listItem = document.createElement("li");
+            listItem.className = `item ${item.completed ? "completed" : ""}`;
+            listItem.innerHTML = `
+                <div class="checkbox ${item.completed ? "checked" : ""}"></div>
+                <span class="item-name">${item.name}</span>
+            `;
+            listItem.addEventListener("click", () =>
+              toggleItem(categoryIndex, itemIndex)
+            );
+            itemsList.appendChild(listItem);
+          });
 
-                categoryElement.appendChild(header);
-                categoryElement.appendChild(itemsList);
-                container.appendChild(categoryElement);
-            });
+          const addNewItemBtn = document.createElement("button");
+          addNewItemBtn.className = "add-new-item-btn";
+          addNewItemBtn.textContent = "+ Add New Item";
+          addNewItemBtn.addEventListener("click", () =>
+            showAddItemForm(categoryIndex)
+          );
 
-            updateProgress();
-        }
+          categoryElement.appendChild(header);
+          categoryElement.appendChild(itemsList);
+          categoryElement.appendChild(addNewItemBtn);
+          container.appendChild(categoryElement);
+        });
 
-        function toggleCategory(categoryIndex) {
-            prerequisites[categoryIndex].expanded = !prerequisites[categoryIndex].expanded;
-            renderPrerequisites();
-        }
+        updateProgress();
+      }
 
-        function toggleItem(categoryIndex, itemIndex) {
-            prerequisites[categoryIndex].items[itemIndex].completed = !prerequisites[categoryIndex].items[itemIndex].completed;
-            renderPrerequisites();
-        }
-
-        function updateProgress() {
-            const totalItems = prerequisites.reduce((sum, category) => sum + category.items.length, 0);
-            const completedItems = prerequisites.reduce((sum, category) => 
-                sum + category.items.filter(item => item.completed).length, 0);
-            const progressPercentage = (completedItems / totalItems) * 100;
-
-            const progressBar = document.getElementById('progress');
-            const progressText = document.getElementById('progress-text');
-
-            progressBar.style.width = `${progressPercentage}%`;
-            progressText.textContent = `${progressPercentage.toFixed(1)}% Complete`;
-        }
-
+      function toggleCategory(categoryIndex) {
+        prerequisites[categoryIndex].expanded =
+          !prerequisites[categoryIndex].expanded;
+        saveToLocalStorage();
         renderPrerequisites();
+      }
+
+      function toggleItem(categoryIndex, itemIndex) {
+        prerequisites[categoryIndex].items[itemIndex].completed =
+          !prerequisites[categoryIndex].items[itemIndex].completed;
+        saveToLocalStorage();
+        renderPrerequisites();
+      }
+
+      function updateProgress() {
+        const totalItems = prerequisites.reduce(
+          (sum, category) => sum + category.items.length,
+          0
+        );
+        const completedItems = prerequisites.reduce(
+          (sum, category) =>
+            sum + category.items.filter(item => item.completed).length,
+          0
+        );
+        const progressPercentage = (completedItems / totalItems) * 100;
+
+        const progressBar = document.getElementById("progress");
+        const progressText = document.getElementById("progress-text");
+
+        progressBar.style.width = `${progressPercentage}%`;
+        progressText.textContent = `${progressPercentage.toFixed(1)}% Complete`;
+      }
+
+      function showAddItemForm(categoryIndex) {
+        const category = document.querySelectorAll(".category")[categoryIndex];
+        const existingForm = category.querySelector(".add-item-form");
+
+        if (existingForm) {
+          existingForm.remove();
+        } else {
+          const form = document.createElement("div");
+          form.className = "add-item-form";
+          form.innerHTML = `
+            <input type="text" placeholder="New item name">
+            <button onclick="addNewItem(${categoryIndex})">Add</button>
+        `;
+          category.appendChild(form);
+        }
+      }
+
+      function addNewItem(categoryIndex) {
+        const category = document.querySelectorAll(".category")[categoryIndex];
+        const input = category.querySelector(".add-item-form input");
+        const newItemName = input.value.trim();
+
+        if (newItemName) {
+          prerequisites[categoryIndex].items.push({
+            name: newItemName,
+            completed: false,
+          });
+          saveToLocalStorage();
+          renderPrerequisites();
+        }
+      }
+
+      function addNewCategory() {
+        const input = document.getElementById("new-category-input");
+        const newCategoryName = input.value.trim();
+
+        if (newCategoryName) {
+          prerequisites.push({
+            name: newCategoryName,
+            items: [],
+            expanded: true,
+          });
+          input.value = "";
+          saveToLocalStorage();
+          renderPrerequisites();
+        }
+      }
+
+      function saveToLocalStorage() {
+        localStorage.setItem("prerequisites", JSON.stringify(prerequisites));
+      }
+
+      renderPrerequisites();
     </script>
-</body>
+  </body>
 </html>
